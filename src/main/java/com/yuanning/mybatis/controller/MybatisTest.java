@@ -2,6 +2,8 @@ package com.yuanning.mybatis.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
@@ -46,4 +48,26 @@ public class MybatisTest {
 		openSession.close();
 	}
 
+	@Test
+	public void test03() throws IOException{
+		SqlSessionFactory sqlSessionFactory =getSqlSessionFactory();
+		SqlSession openSession = sqlSessionFactory.openSession();
+		EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+		List<Employee> employees = mapper.getEmpByIds(Arrays.asList(1,2,3));
+		System.out.println(employees);
+		openSession.close();
+	}
+	
+	@Test
+	public void test04() throws IOException{
+		SqlSessionFactory sqlSessionFactory =getSqlSessionFactory();
+		SqlSession openSession = sqlSessionFactory.openSession();
+		EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+		mapper.addEmps(Arrays.asList(new Employee(null,"2", "2", "2"),new Employee(null,"2", "2", "2")));
+		
+		
+		openSession.commit();
+		openSession.close();
+	}
+	
 }

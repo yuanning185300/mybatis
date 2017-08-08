@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yuanning.mybatis.dao.EmployeeMapper">
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
 
 	<resultMap type="employee" id="MyEmp">
 		<id column="id" property="id" />
@@ -43,9 +44,25 @@
 				gender = #{gender}
 			</if>
 		</set>
-		where id = #{id}
-
-		
+		where id = #{id}		
 	</update>
+	
+	<select id="getEmpByIds" resultMap="MyEmp">
+		<!-- collection:指定要遍历的集合，list类型的参数会特殊处理封装在map中
+		map的 key就叫list -->
+		select * from tbl_employee where id in 
+		<foreach collection="list" item="id" open="(" separator="," close=")" >
+			#{id}
+		</foreach>
+	</select>
+	
+	<!-- 批量保存 -->
+	<insert id="addEmps">
+		insert into tbl_employee(last_name,gender,email)
+		values
+		<foreach collection="employees" item="emp" separator=",">
+			(#{emp.lastName},#{emp.gender},#{emp.email})
+		</foreach>
+	</insert>
 
 </mapper>
