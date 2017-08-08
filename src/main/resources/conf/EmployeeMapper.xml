@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuanning.mybatis.dao.EmployeeMapper">
+
+	<resultMap type="employee" id="MyEmp">
+		<id column="id" property="id" />
+		<result column="last_name" property="lastName" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+	</resultMap>
+
+	<select id="getEmpById" resultMap="MyEmp">
+		select * from tbl_employee
+
+		<trim prefix="where" prefixOverrides="and">
+			<if test="id!=null">
+				id = #{id}
+			</if>
+			<if test="lastName!=null and lastName!=''">
+				and last_name like #{lastName}
+			</if>
+			<if test="email!=null">
+				email = #{email}
+			</if>
+			<if test="gender!=null">
+				gender = #{gender}
+			</if>
+		</trim>
+	</select>
+
+	<update id="updateEmp">
+		update tbl_employee set email = #{email} where id = #{id}
+		<!-- <set>		
+			<if test="lastName!=null">
+				last_name = #{lastName},
+			</if>
+			<if test="email!=null">
+				email = #{email},
+			</if>
+			<if test="gender!=null">
+				gender = #{gender}
+			</if>
+		</set> -->
+		
+
+		
+	</update>
+
+</mapper>
