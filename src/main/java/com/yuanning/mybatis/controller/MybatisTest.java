@@ -39,10 +39,10 @@ public class MybatisTest {
 		SqlSessionFactory sqlSessionFactory =getSqlSessionFactory();
 		SqlSession openSession = sqlSessionFactory.openSession();
 		EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
-		Employee employee=new Employee(2, null, "4", "5");
+		Employee employee=new Employee(2, null, null, "1");
 
 		mapper.updateEmp(employee);
-		
+		openSession.commit();
 		openSession.close();
 	}
 
